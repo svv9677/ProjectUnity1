@@ -115,8 +115,8 @@ public class Puzzle : MonoBehaviour {
 			iTween.MoveTo(pc.gameObject, 
 			              iTween.Hash(	"position", pos, 
 			            				"islocal", true, 
-			            				"time", 1,
-			            				"easeType", "easeOutBounce"));
+			            				"time", 0.5f, 
+			            				"easeType", "easeOutExpo"));
 			int x = pc.SlotX;
 			int y = pc.SlotY;
 			pc.SlotX = currentEmptySlotX;
