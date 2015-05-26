@@ -24,6 +24,26 @@ public class Puzzle : MonoBehaviour {
 		this.SlotYs[1] =  150;
 		this.SlotYs[2] = -150;
 		this.SlotYs[3] = -445;
+
+		this.SetVisible (false);
+	}
+
+	protected void SetVisible(bool hideFlags)
+	{
+		foreach (Piece pc in this.Pieces)
+			pc.gameObject.SetActive (hideFlags);
+		
+		this.gameObject.SetActive (hideFlags);
+	}
+	
+	public void EnterMode()
+	{
+		this.SetVisible (true);
+	}
+
+	public void ExitMode()
+	{
+		this.SetVisible (false);
 	}
 	
 	protected virtual void OnEnable()
