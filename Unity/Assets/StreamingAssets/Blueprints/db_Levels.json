@@ -1,0 +1,22 @@
+[
+	{"Level":"1","Moves Available":"20","3 Star":"8","2 Star":"5","Pattern":"1,2,3,4, 5,6,7,8, 9,10,11,12, 13,14,15,0","Moves":"10","Play Speed":"1"},
+	{"Level":"2","Moves Available":"20","3 Star":"8","2 Star":"5","Pattern":"1,5,9,13,    2,6,10,14,    3,7,11,15,  4,8,12,0","Moves":"10","Play Speed":"1"},
+	{"Level":"3","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"4","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"5","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"6","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"7","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"8","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"9","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"10","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"11","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"12","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"13","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"14","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"15","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"16","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"17","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"18","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"19","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""},
+	{"Level":"20","Moves Available":"","3 Star":"","2 Star":"","Pattern":"","Moves":"","Play Speed":""}
+]
