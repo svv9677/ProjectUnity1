@@ -2,8 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Puzzle : MonoBehaviour {
+public enum ePuzzleState {
+	E_PS_SET_TARGET_PATTERN = 0,
+	E_PS_DISPLAY_SHUFFLE_START,
+	E_PS_SHUFFLE_PIECES,
+	E_PS_SET_STARTING_PATTERN,
+	E_PS_DISPLAY_LEVEL_GOALS,
+	E_PS_GAME_PLAY,
+	E_PS_GAME_RESULTS
+}
 
+public class Puzzle : Mode {
+
+	private ePuzzleState PuzzleState;
 	private int[] SlotXs;
 	private int[] SlotYs;
 
@@ -38,6 +49,7 @@ public class Puzzle : MonoBehaviour {
 	
 	public void EnterMode()
 	{
+		this.PuzzleState = ePuzzleState.E_PS_SET_TARGET_PATTERN;
 		this.SetVisible (true);
 	}
 
@@ -148,7 +160,40 @@ public class Puzzle : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
-	
+	void Update () 
+	{
+		switch(this.PuzzleState)
+		{
+		case ePuzzleState.E_PS_SET_TARGET_PATTERN:
+		{
+		}
+			break;
+		case ePuzzleState.E_PS_DISPLAY_SHUFFLE_START:
+		{
+		}
+			break;
+		case ePuzzleState.E_PS_SHUFFLE_PIECES:
+		{
+		}
+			break;
+		case ePuzzleState.E_PS_SET_STARTING_PATTERN:
+		{
+		}
+			break;
+		case ePuzzleState.E_PS_DISPLAY_LEVEL_GOALS:
+		{
+		}
+			break;
+		case ePuzzleState.E_PS_GAME_PLAY:
+		{
+		}
+			break;
+		case ePuzzleState.E_PS_GAME_RESULTS:
+		{
+		}
+			break;
+		default:
+			break;
+		}
 	}
 }

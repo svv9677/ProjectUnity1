@@ -2,9 +2,10 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class Splash : MonoBehaviour {
+public class Splash : Mode {
 
 	public Image splashImage;
+	public Button startButton;
 
 	// Use this for initialization
 	void Start () {
@@ -20,16 +21,18 @@ public class Splash : MonoBehaviour {
 
 	public void EnterMode()
 	{
+		this.startButton.onClick.AddListener(OnStart);
 		this.SetVisible (true);
 	}
 
 	public void ExitMode()
 	{
+		this.startButton.onClick.RemoveListener(OnStart);
 		this.SetVisible (false);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public void OnStart()
+	{
+		GameMode.Instance.SetMode(eMode.E_M_PUZZLE);
 	}
 }
