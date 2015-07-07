@@ -19,13 +19,13 @@ public class Splash : Mode {
 		this.gameObject.SetActive (hideFlags);
 	}
 
-	public void EnterMode()
+	public override void EnterMode()
 	{
 		this.startButton.onClick.AddListener(OnStart);
 		this.SetVisible (true);
 	}
 
-	public void ExitMode()
+	public override void ExitMode()
 	{
 		this.startButton.onClick.RemoveListener(OnStart);
 		this.SetVisible (false);

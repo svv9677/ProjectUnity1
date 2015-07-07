@@ -47,13 +47,13 @@ public class Puzzle : Mode {
 		this.gameObject.SetActive (hideFlags);
 	}
 	
-	public void EnterMode()
+	public override void EnterMode()
 	{
 		this.PuzzleState = ePuzzleState.E_PS_SET_TARGET_PATTERN;
 		this.SetVisible (true);
 	}
 
-	public void ExitMode()
+	public override void ExitMode()
 	{
 		this.SetVisible (false);
 	}
