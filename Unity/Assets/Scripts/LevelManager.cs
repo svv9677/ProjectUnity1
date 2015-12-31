@@ -28,24 +28,24 @@ public struct LevelData
 
 	public override string ToString()
 	{
-		string str = "Level: ";
-		str += Level.ToString ();
-		str += ", Moves Available: ";
-		str += MovesAvailable.ToString ();
-		str += ", 2 Star: ";
-		str += MovesForTwoStars.ToString ();
-		str += ", 3 Star: ";
-		str += MovesForThreeStars.ToString ();
-		str += ", Total Moves: ";
-		str += MovesForShuffle.ToString ();
-		str += ", Play Speed: ";
-		str += PlaySpeed.ToString ();
-		str += ", Pattern: ";
+		System.Text.StringBuilder str = new System.Text.StringBuilder("Level: ");
+		str.Append(Level.ToString ());
+		str.Append(", Moves Available: ");
+		str.Append(MovesAvailable.ToString ());
+		str.Append(", 2 Star: ");
+		str.Append(MovesForTwoStars.ToString ());
+		str.Append(", 3 Star: ");
+		str.Append(MovesForThreeStars.ToString ());
+		str.Append(", Total Moves: ");
+		str.Append(MovesForShuffle.ToString ());
+		str.Append(", Play Speed: ");
+		str.Append(PlaySpeed.ToString ());
+		str.Append(", Pattern: ");
 		for (int i=0; i<4; i++)
 			for (int j=0; j<4; j++)
-				str += " " + Pattern [i, j].ToString ();
+				str.Append(" " + Pattern [i, j].ToString ());
 
-		return str;
+		return str.ToString();
 	}
 	/*{
 		"Level":"1","Moves Available":"20","2 Star":"15","3 Star":"12","Moves":"10","Play Speed":"1",

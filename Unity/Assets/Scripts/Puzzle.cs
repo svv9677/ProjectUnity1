@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -22,7 +22,7 @@ public class Puzzle : Mode {
 	public int currentEmptySlotY;
 
 	public List<Piece> Pieces;
-
+	 
 	// Use this for initialization
 	void Start () {
 		this.SlotXs = new int[4];
@@ -162,6 +162,11 @@ public class Puzzle : Mode {
 	// Update is called once per frame
 	void Update () 
 	{
+		if (Input.GetKey (KeyCode.Escape)) 
+		{
+			GameMode.Instance.SetMode(eMode.E_M_SPLASH);
+		}
+
 		switch(this.PuzzleState)
 		{
 		case ePuzzleState.E_PS_SET_TARGET_PATTERN:
