@@ -12,13 +12,18 @@ public enum eMode
 
 public class GameMode : Singleton<GameMode> {
 
-	private eMode mode;
+	[HideInInspector]
+	public Mode modeObject = null;
+	public eMode mode { get; private set; }
 
-	public Splash splash;
 	public Puzzle puzzle;
-	
+	public Splash splash;
+
 	// Use this for initialization
 	void Start () {
+		this.puzzle.gameObject.SetActive(false);
+		this.splash.gameObject.SetActive(false);
+
 		this.mode = eMode.E_M_NONE;
 		SetMode (eMode.E_M_SPLASH);
 	}
@@ -32,20 +37,10 @@ public class GameMode : Singleton<GameMode> {
 
 	private void ExitMode()
 	{
-		switch(this.mode)
+		if(this.mode != eMode.E_M_NONE)
 		{
-		case eMode.E_M_SPLASH:
-		{
-			this.splash.ExitMode();
-			break;
-		}
-		case eMode.E_M_PUZZLE:
-		{
-			this.puzzle.ExitMode();
-			break;
-		}
-		default:
-			break;
+			this.modeObject.ExitMode();
+			this.modeObject = null;
 		}
 	}
 
@@ -55,16 +50,22 @@ public class GameMode : Singleton<GameMode> {
 		{
 		case eMode.E_M_SPLASH:
 		{
-			this.splash.EnterMode();
+			this.modeObject = this.splash;
 			break;
 		}
 		case eMode.E_M_PUZZLE:
 		{
-			this.puzzle.EnterMode();
+			this.modeObject = this.puzzle;
 			break;
 		}
 		default:
 			break;
+		}
+
+		if(this.modeObject != null)
+		{
+			this.modeObject.gameObject.SetActive(true);
+			this.modeObject.EnterMode();
 		}
 	}
 }

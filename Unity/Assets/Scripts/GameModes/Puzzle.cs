@@ -25,6 +25,9 @@ public class Puzzle : Mode {
 	 
 	// Use this for initialization
 	void Start () {
+
+		this.mode = eMode.E_M_PUZZLE;
+
 		this.SlotXs = new int[4];
 		this.SlotXs[0] = -441;
 		this.SlotXs[1] = -147;
@@ -35,8 +38,6 @@ public class Puzzle : Mode {
 		this.SlotYs[1] =  150;
 		this.SlotYs[2] = -150;
 		this.SlotYs[3] = -445;
-
-		this.SetVisible (false);
 	}
 
 	protected void SetVisible(bool hideFlags)

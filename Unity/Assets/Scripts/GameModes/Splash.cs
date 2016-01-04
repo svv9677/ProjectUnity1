@@ -9,7 +9,7 @@ public class Splash : Mode {
 
 	// Use this for initialization
 	void Start () {
-		this.SetVisible (false);
+		this.mode = eMode.E_M_SPLASH;
 	}
 
 	protected void StartTween(bool hideFlags, float time=0.5f)
@@ -46,8 +46,8 @@ public class Splash : Mode {
 
 	public override void EnterMode()
 	{
-		this.splashImage.transform.localPosition = new Vector3(-1080.0f,0,0);
 		this.SetVisible (true);
+		this.splashImage.transform.localPosition = new Vector3(-1080.0f,0,0);
 		this.startButton.onClick.AddListener(OnStart);
 		this.StartTween (false);
 	}
