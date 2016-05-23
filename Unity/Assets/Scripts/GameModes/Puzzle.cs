@@ -139,6 +139,11 @@ public class Puzzle : Mode {
 
 		string direction = GetDirection (dir);
 
+		OnInput(direction);
+	}
+
+	private void OnInput(string direction)
+	{
 		Piece pc = GetPieceToSide (direction);
 		if (pc != null) {
 			//Debug.Log ("Direction: " + direction + ", Piece: " + pc.SlotX + "," + pc.SlotY);
@@ -163,17 +168,45 @@ public class Puzzle : Mode {
 	// Update is called once per frame
 	void Update () 
 	{
-		if (Input.GetKey (KeyCode.Escape)) 
+		if (Input.GetKeyDown (KeyCode.Escape)) 
 		{
 			GameMode.Instance.SetMode(eMode.E_M_SPLASH);
 		}
+
+		// TODO: Move this into its own state
+		if(Input.GetKeyDown(KeyCode.DownArrow))
+			OnInput("down");
+		if(Input.GetKeyDown(KeyCode.UpArrow))
+			OnInput("up");
+		if(Input.GetKeyDown(KeyCode.LeftArrow))
+			OnInput("right");
+		if(Input.GetKeyDown(KeyCode.RightArrow))
+			OnInput("left");
 
 		switch(this.PuzzleState)
 		{
 		case ePuzzleState.E_PS_SET_TARGET_PATTERN:
 		{
-		}
+			LevelData current_level_data = LevelManager.Instance.Levels[Player.Instance.Level];
+			foreach (Piece pc in Pieces) 
+			{
+				Vector3 pos = pc.transform.localPosition;
+				int x=0,y=0;
+				current_level_data.GetXYForNumber(pc.Number, out x, out y);
+				pos.x = SlotXs [x];
+				pos.y = SlotYs [y];
+				iTween.MoveTo(pc.gameObject, 
+				              iTween.Hash(	"position", pos, 
+				            "islocal", true, 
+				            "time", 0.5f, 
+				            "easeType", "easeOutBounce"));
+                pc.SlotX = x;
+                pc.SlotY = y;
+            }
+			current_level_data.GetXYForNumber(0, out currentEmptySlotX, out currentEmptySlotY);
+			this.PuzzleState = ePuzzleState.E_PS_DISPLAY_SHUFFLE_START;
 			break;
+		}
 		case ePuzzleState.E_PS_DISPLAY_SHUFFLE_START:
 		{
 		}

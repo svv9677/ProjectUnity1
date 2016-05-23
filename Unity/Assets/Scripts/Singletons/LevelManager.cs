@@ -26,6 +26,23 @@ public struct LevelData
 			Pattern[(i/4),(i%4)] = System.Int32.Parse (str[i]);
 	}
 
+	public void GetXYForNumber(int number, out int x, out int y)
+	{
+		x = 0; y = 0;
+		for(int i=0; i<4; i++)
+		{
+			for(int j=0; j<4; j++)
+			{
+				if(Pattern[i,j] == number)
+				{
+					x = i;
+					y = j;
+					return;
+				}
+			}
+		}
+	}
+
 	public override string ToString()
 	{
 		System.Text.StringBuilder str = new System.Text.StringBuilder("Level: ");
@@ -57,22 +74,29 @@ public struct LevelData
 public class LevelManager : Singleton<LevelManager>
 {
 	protected delegate void FileLoadedCallback(int result, string data);
-	private List<LevelData> levels;
+	public List<LevelData> Levels;
 
 	// Use this for initialization
-	void Start ()
+	public void Load()
 	{
 		string FilePath = System.IO.Path.Combine("Blueprints", "db_Levels.json");
 		List<object> data = FileUtils.Instance.GetJsonAsset<List<object>>(FilePath);
-		levels = new List<LevelData> ();
+		Levels = new List<LevelData> ();
 		for (int i=0; i< data.Count; i++) 
 		{
 			Dictionary<string, object> dict = (Dictionary<string, object>)data [i];
 			LevelData level = new LevelData ();
 			level.LoadFromDict (dict);
-			levels.Add (level);
+			Levels.Add (level);
 			Debug.Log ("Adding level: " + level.ToString());
 		}
+	}
+
+	public override void Destroy()
+	{
+		Levels = null;
+
+		base.Destroy();
 	}
 	
 	// Update is called once per frame

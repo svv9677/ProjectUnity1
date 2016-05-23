@@ -50,6 +50,9 @@ public class Splash : Mode {
 		this.splashImage.transform.localPosition = new Vector3(-1080.0f,0,0);
 		this.startButton.onClick.AddListener(OnStart);
 		this.StartTween (false);
+
+		LevelManager.Instance.Load();
+		Player.Instance.Load();
 	}
 
 	public override void ExitMode()
