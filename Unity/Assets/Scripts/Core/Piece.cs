@@ -5,14 +5,15 @@ using System.Collections;
 public class Piece : MonoBehaviour {
 
 	public Text NumberText;
-	public int Number;
+	private int _Number;
+	public int Number { get { return _Number; } set { this._Number = value; this.NumberText.text = value.ToString (); } }
 
 	public int SlotX;
 	public int SlotY;
 
 	// Use this for initialization
 	void Start () {
-		this.NumberText.text = this.Number.ToString ();
+
 	}
 	
 	// Update is called once per frame

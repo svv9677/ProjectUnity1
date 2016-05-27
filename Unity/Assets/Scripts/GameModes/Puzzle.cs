@@ -22,6 +22,9 @@ public class Puzzle : Mode {
 	public int currentEmptySlotY;
 
 	public List<Piece> Pieces;
+
+	private System.DateTime ShuffleStartTime;
+	private int ShuffleMovesDone;
 	 
 	// Use this for initialization
 	void Start () {
@@ -29,15 +32,34 @@ public class Puzzle : Mode {
 		this.mode = eMode.E_M_PUZZLE;
 
 		this.SlotXs = new int[4];
-		this.SlotXs[0] = -441;
-		this.SlotXs[1] = -147;
-		this.SlotXs[2] =  146;
-		this.SlotXs[3] =  440;
+		this.SlotXs[0] = -317;
+		this.SlotXs[1] = -105;
+		this.SlotXs[2] =  107;
+		this.SlotXs[3] =  318;
 		this.SlotYs = new int[4];
-		this.SlotYs[0] =  441;
-		this.SlotYs[1] =  150;
-		this.SlotYs[2] = -150;
-		this.SlotYs[3] = -445;
+		this.SlotYs[0] =  322;
+		this.SlotYs[1] =  109;
+		this.SlotYs[2] = -105;
+		this.SlotYs[3] = -318;
+
+		this.Pieces.Clear();
+		GameObject pc_prefab = Resources.Load ("Prefabs/Piece") as GameObject;
+		if(pc_prefab == null)
+		{
+			Debug.LogError("Failed to load Piece prefab!!");
+			return;
+		}
+		for(int i=0; i<15; i++)
+		{
+			GameObject pc_obj = Instantiate(pc_prefab);
+			pc_obj.transform.SetParent(this.gameObject.transform);
+			pc_obj.transform.localScale = Vector3.one;
+			pc_obj.transform.localPosition = Vector3.zero;
+			pc_obj.transform.SetSiblingIndex(1);
+			Piece pc = pc_obj.GetComponent<Piece>();
+			pc.Number = i+1;
+			this.Pieces.Add (pc);
+		}
 	}
 
 	protected void SetVisible(bool hideFlags)
@@ -164,30 +186,31 @@ public class Puzzle : Mode {
 		} else
 			Debug.Log ("Piece not found to: " + direction + " of " + currentEmptySlotX + "," + currentEmptySlotY);
 	}
+	
+	private void ShufflePiece(LevelData current_level_data)
+	{
+		string direction = "up";
+		direction = current_level_data.ShuffleGuide[this.ShuffleMovesDone];
+		this.ShuffleMovesDone++;
+
+		Debug.Log ("Shuffling: " + direction + ". ShuffleMovesDone: " + this.ShuffleMovesDone.ToString());
+		OnInput(direction);
+	}
 
 	// Update is called once per frame
 	void Update () 
 	{
+		LevelData current_level_data = LevelManager.Instance.GetLevelData(Player.Instance.Level);
 		if (Input.GetKeyDown (KeyCode.Escape)) 
 		{
 			GameMode.Instance.SetMode(eMode.E_M_SPLASH);
 		}
 
-		// TODO: Move this into its own state
-		if(Input.GetKeyDown(KeyCode.DownArrow))
-			OnInput("down");
-		if(Input.GetKeyDown(KeyCode.UpArrow))
-			OnInput("up");
-		if(Input.GetKeyDown(KeyCode.LeftArrow))
-			OnInput("right");
-		if(Input.GetKeyDown(KeyCode.RightArrow))
-			OnInput("left");
-
 		switch(this.PuzzleState)
 		{
 		case ePuzzleState.E_PS_SET_TARGET_PATTERN:
 		{
-			LevelData current_level_data = LevelManager.Instance.Levels[Player.Instance.Level];
+			Debug.Log ("Setting Target pattern to : " + current_level_data.ToString());
 			foreach (Piece pc in Pieces) 
 			{
 				Vector3 pos = pc.transform.localPosition;
@@ -209,28 +232,58 @@ public class Puzzle : Mode {
 		}
 		case ePuzzleState.E_PS_DISPLAY_SHUFFLE_START:
 		{
-		}
+			// TODO: UI, for now move ahead to next state
+			if(Input.GetKeyDown(KeyCode.Space))
+			{
+				this.PuzzleState = ePuzzleState.E_PS_SHUFFLE_PIECES;
+				this.ShuffleStartTime = System.DateTime.Now;
+				this.ShuffleMovesDone = 0;
+			}
 			break;
+		}
 		case ePuzzleState.E_PS_SHUFFLE_PIECES:
 		{
-		}
+			System.TimeSpan ts = System.DateTime.Now - this.ShuffleStartTime;
+			if(ts.TotalSeconds > (int)(this.ShuffleMovesDone/current_level_data.PlaySpeed))
+			//if(Input.GetKeyDown(KeyCode.Space))
+			{
+				ShufflePiece(current_level_data);
+				if(this.ShuffleMovesDone >= current_level_data.MovesForShuffle)
+				{
+					Debug.Log ("Done Shuffling: " + this.ShuffleMovesDone.ToString() + " <=> " + current_level_data.MovesForShuffle.ToString());
+					this.PuzzleState = ePuzzleState.E_PS_SET_STARTING_PATTERN;
+				}
+			}
 			break;
+		}
 		case ePuzzleState.E_PS_SET_STARTING_PATTERN:
 		{
-		}
+			#if UNITY_EDITOR
+			// TODO: Move this into its own state
+			if(Input.GetKeyDown(KeyCode.DownArrow))
+				OnInput("down");
+			if(Input.GetKeyDown(KeyCode.UpArrow))
+				OnInput("up");
+			if(Input.GetKeyDown(KeyCode.LeftArrow))
+				OnInput("right");
+			if(Input.GetKeyDown(KeyCode.RightArrow))
+				OnInput("left");
+			#endif
+			
 			break;
+		}
 		case ePuzzleState.E_PS_DISPLAY_LEVEL_GOALS:
 		{
-		}
 			break;
+		}
 		case ePuzzleState.E_PS_GAME_PLAY:
 		{
-		}
 			break;
+		}
 		case ePuzzleState.E_PS_GAME_RESULTS:
 		{
-		}
 			break;
+		}
 		default:
 			break;
 		}
