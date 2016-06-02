@@ -46,6 +46,10 @@ public class Splash : Mode {
 
 	public override void EnterMode()
 	{
+		HUD.Instance.gameObject.SetActive(false);
+		DebugMenu.Instance.gameObject.SetActive(false);
+		Toast.Instance.gameObject.SetActive(false);
+
 		this.SetVisible (true);
 		this.splashImage.transform.localPosition = new Vector3(-1080.0f,0,0);
 		this.startButton.onClick.AddListener(OnStart);

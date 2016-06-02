@@ -3,8 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public enum ePuzzleState {
-	E_PS_SET_TARGET_PATTERN = 0,
+	E_PS_TARGET_PATTERN_TOAST = 0,
+	E_PS_TARGET_PATTERN_TOAST_WAITING,
+	E_PS_SET_TARGET_PATTERN,
+	E_PS_DISPLAY_TARGET_PATTERN,
 	E_PS_DISPLAY_SHUFFLE_START,
+	E_PS_DISPLAY_SHUFFLE_START_WAITING,
 	E_PS_SHUFFLE_PIECES,
 	E_PS_SET_STARTING_PATTERN,
 	E_PS_DISPLAY_LEVEL_GOALS,
@@ -62,17 +66,24 @@ public class Puzzle : Mode {
 		}
 	}
 
+	public override string ToString ()
+	{
+		return string.Format ("State: {0}", PuzzleState);
+	}
+
 	protected void SetVisible(bool hideFlags)
 	{
 		foreach (Piece pc in this.Pieces)
 			pc.gameObject.SetActive (hideFlags);
 		
 		this.gameObject.SetActive (hideFlags);
+
+		HUD.Instance.gameObject.SetActive(hideFlags);
 	}
 	
 	public override void EnterMode()
 	{
-		this.PuzzleState = ePuzzleState.E_PS_SET_TARGET_PATTERN;
+		this.PuzzleState = ePuzzleState.E_PS_TARGET_PATTERN_TOAST;
 		this.SetVisible (true);
 	}
 
@@ -197,6 +208,26 @@ public class Puzzle : Mode {
 		OnInput(direction);
 	}
 
+	public void OnTargetPatternToast()
+	{
+		this.PuzzleState = ePuzzleState.E_PS_SET_TARGET_PATTERN;
+	}
+
+	public void OnShuffleToast()
+	{
+		this.PuzzleState = ePuzzleState.E_PS_SHUFFLE_PIECES;
+		this.ShuffleStartTime = System.DateTime.Now;
+		this.ShuffleMovesDone = 0;
+	}
+
+	IEnumerator OnDisplayTargetPattern()
+	{
+		yield return new WaitForSeconds(3.0f);
+		this.PuzzleState = ePuzzleState.E_PS_DISPLAY_SHUFFLE_START;
+		yield return null;
+	}
+
+
 	// Update is called once per frame
 	void Update () 
 	{
@@ -208,6 +239,12 @@ public class Puzzle : Mode {
 
 		switch(this.PuzzleState)
 		{
+		case ePuzzleState.E_PS_TARGET_PATTERN_TOAST:
+		{
+			Globals.ShowToast("Level " + current_level_data.Level.ToString() + "\nTARGET PATTERN", Globals.TOAST_MEDIUM, OnTargetPatternToast);
+				this.PuzzleState = ePuzzleState.E_PS_TARGET_PATTERN_TOAST_WAITING;
+			break;
+		}
 		case ePuzzleState.E_PS_SET_TARGET_PATTERN:
 		{
 			Debug.Log ("Setting Target pattern to : " + current_level_data.ToString());
@@ -227,18 +264,14 @@ public class Puzzle : Mode {
                 pc.SlotY = y;
             }
 			current_level_data.GetXYForNumber(0, out currentEmptySlotX, out currentEmptySlotY);
-			this.PuzzleState = ePuzzleState.E_PS_DISPLAY_SHUFFLE_START;
+			this.PuzzleState = ePuzzleState.E_PS_DISPLAY_TARGET_PATTERN;
+			StartCoroutine(OnDisplayTargetPattern());
 			break;
 		}
 		case ePuzzleState.E_PS_DISPLAY_SHUFFLE_START:
 		{
-			// TODO: UI, for now move ahead to next state
-			if(Input.GetKeyDown(KeyCode.Space))
-			{
-				this.PuzzleState = ePuzzleState.E_PS_SHUFFLE_PIECES;
-				this.ShuffleStartTime = System.DateTime.Now;
-				this.ShuffleMovesDone = 0;
-			}
+			Globals.ShowToast("SHUFFLING PIECES", Globals.TOAST_MEDIUM, OnShuffleToast);
+			this.PuzzleState = ePuzzleState.E_PS_DISPLAY_SHUFFLE_START_WAITING;
 			break;
 		}
 		case ePuzzleState.E_PS_SHUFFLE_PIECES:

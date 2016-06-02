@@ -59,7 +59,7 @@ public struct LevelData
 
 	public override string ToString()
 	{
-		System.Text.StringBuilder str = new System.Text.StringBuilder("Level: ");
+		System.Text.StringBuilder str = new System.Text.StringBuilder();
 		str.Append(Level.ToString ());
 		str.Append(", Moves Available: ");
 		str.Append(MovesAvailable.ToString ());
@@ -67,15 +67,15 @@ public struct LevelData
 		str.Append(MovesForTwoStars.ToString ());
 		str.Append(", 3 Star: ");
 		str.Append(MovesForThreeStars.ToString ());
-		str.Append(", Total Moves: ");
+		str.Append("\n Total Moves: ");
 		str.Append(MovesForShuffle.ToString ());
 		str.Append(", Play Speed: ");
 		str.Append(PlaySpeed.ToString ());
-		str.Append(", Pattern: ");
+		str.Append("\n Pattern: ");
 		for (int i=0; i<4; i++)
 			for (int j=0; j<4; j++)
 				str.Append(" " + Pattern [i, j].ToString ());
-		str.Append(", Shuffle Guide: ");
+		str.Append("\n Shuffle Guide: ");
 		for (int i=0; i<ShuffleGuide.Count; i++)
 			str.Append(" " + ShuffleGuide[i]);
 

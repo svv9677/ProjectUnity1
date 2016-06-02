@@ -13,17 +13,29 @@ public class Player : Singleton<Player>
 
 	public void Load()
 	{
-		this.Level = PlayerPrefs.HasKey(Globals.PREF_LEVEL) ? PlayerPrefs.GetInt(Globals.PREF_LEVEL) : 2;
+		this.Level = PlayerPrefs.HasKey(Globals.PREF_LEVEL) ? PlayerPrefs.GetInt(Globals.PREF_LEVEL) : 1;
 	}
 
 	public void Save()
 	{
 		PlayerPrefs.SetInt(Globals.PREF_LEVEL, this.Level);
 	}
+
+	public override string ToString ()
+	{
+		return string.Format ("Level: {0}", Level);
+	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
+		if(Input.GetKeyDown(KeyCode.BackQuote))
+		{
+			if(DebugMenu.Instance.gameObject.activeSelf)
+				DebugMenu.Instance.gameObject.SetActive(false);
+			else
+				DebugMenu.Instance.gameObject.SetActive(true);
+		}
 		
 	}
 }
