@@ -26,13 +26,13 @@ public class Puzzle : Mode {
 	public int currentEmptySlotY;
 
 	public List<Piece> Pieces;
+	private List<GameObject> PieceObjects;
 
 	private System.DateTime ShuffleStartTime;
 	private int ShuffleMovesDone;
 	 
-	// Use this for initialization
-	void Start () {
-
+	private void InitPieces()
+	{
 		this.mode = eMode.E_M_PUZZLE;
 
 		this.SlotXs = new int[4];
@@ -47,6 +47,7 @@ public class Puzzle : Mode {
 		this.SlotYs[3] = -318;
 
 		this.Pieces.Clear();
+		this.PieceObjects = new List<GameObject>();
 		GameObject pc_prefab = Resources.Load ("Prefabs/Piece") as GameObject;
 		if(pc_prefab == null)
 		{
@@ -63,7 +64,20 @@ public class Puzzle : Mode {
 			Piece pc = pc_obj.GetComponent<Piece>();
 			pc.Number = i+1;
 			this.Pieces.Add (pc);
+			this.PieceObjects.Add(pc_obj);
 		}
+	}
+
+	private void DestroyPieces()
+	{
+		this.mode = eMode.E_M_NONE;
+
+		for(int i=0; i<15; i++)
+		{
+			GameObject.DestroyImmediate(this.PieceObjects[i]);
+		}
+		this.Pieces.Clear();
+		this.PieceObjects.Clear();
 	}
 
 	public override string ToString ()
@@ -83,12 +97,14 @@ public class Puzzle : Mode {
 	
 	public override void EnterMode()
 	{
+		this.InitPieces();
 		this.PuzzleState = ePuzzleState.E_PS_TARGET_PATTERN_TOAST;
 		this.SetVisible (true);
 	}
 
 	public override void ExitMode()
 	{
+		this.DestroyPieces();
 		this.SetVisible (false);
 	}
 	
